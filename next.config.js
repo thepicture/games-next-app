@@ -4,6 +4,7 @@ const nextConfig = {
 		appDir: true,
 	},
 	output: 'standalone',
+	pageExtensions: ['page.tsx', 'page.ts'],
 };
 
 module.exports = nextConfig;
