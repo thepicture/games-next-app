@@ -5,6 +5,9 @@ const nextConfig = {
 	},
 	output: 'standalone',
 	pageExtensions: ['page.tsx', 'page.ts'],
+	images: {
+		domains: ['media.rawg.io'],
+	},
 };
 
 module.exports = nextConfig;
