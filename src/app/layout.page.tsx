@@ -1,5 +1,7 @@
 import './global.css';
 
+console.log('@@@');
+
 export default function RootLayout({
 	children,
 }: {
