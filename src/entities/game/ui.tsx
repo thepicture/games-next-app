@@ -1,20 +1,9 @@
 import { CardActionArea, CardContent, Typography, styled } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
-import Image from 'next/image';
 import React from 'react';
 
 import { rawgApi } from 'shared/api';
 import { Card } from 'shared/ui';
-
-const ImageWithContent = styled('section')(() => ({
-	position: 'relative',
-
-	display: 'grid',
-	gridTemplateRows: '1px 200px',
-
-	width: 256,
-	margin: 0,
-}));
 
 export const Game = ({ game }: { game: rawgApi.GameModels.GameDto }) => {
 	return (
