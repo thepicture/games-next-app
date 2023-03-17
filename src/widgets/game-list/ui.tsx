@@ -1,9 +1,11 @@
 import styled from '@emotion/styled';
 import { Typography } from '@mui/material';
 import React from 'react';
-import { rawgApi } from 'shared';
+import useInfiniteScroll from 'react-infinite-scroll-hook';
 
 import { GameCard, gameModel } from 'entities/game';
+
+import { GameDto } from 'shared/api/rawg/models';
 
 const List = styled('section')(() => ({
 	display: 'flex',
@@ -17,7 +19,21 @@ export type GameListProps = {
 };
 
 export const GameList = ({ filters }: GameListProps) => {
-	const games = gameModel.useGamesQuery();
+	const {
+		data: games,
+		isLoading,
+		hasNextPage,
+		isLoadingError,
+		fetchNextPage,
+	} = gameModel.useGamesQuery();
+
+	const [scrollRef] = useInfiniteScroll({
+		loading: isLoading,
+		disabled: !!isLoadingError,
+		hasNextPage: hasNextPage || false,
+		onLoadMore: fetchNextPage,
+		rootMargin: '0px 0px 400px 0px',
+	});
 
 	if (!games) {
 		return <Typography>Loading...</Typography>;
@@ -29,7 +45,9 @@ export const GameList = ({ filters }: GameListProps) => {
 
 	return (
 		<List>
-			{(games as unknown as { results: rawgApi.GameModels.GameDto[] }).results
+			{(games as unknown as { pages: { results: GameDto[] }[] }).pages
+				.map((page) => page.results)
+				.reduce((result1, result2) => [...result1, ...result2], [])
 				.filter((game) =>
 					filters.name ? game.name.includes(filters.name) : true
 				)
@@ -44,6 +62,7 @@ export const GameList = ({ filters }: GameListProps) => {
 				.map((game) => (
 					<GameCard key={game.id.toString()} game={game} />
 				))}
+			<div ref={scrollRef} />
 		</List>
 	);
 };
