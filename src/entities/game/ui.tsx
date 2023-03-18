@@ -1,14 +1,17 @@
 import { CardActionArea, CardContent, Typography, styled } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import { rawgApi } from 'shared/api';
 import { Card } from 'shared/ui';
 
 export const Game = ({ game }: { game: rawgApi.GameModels.GameDto }) => {
+	const router = useRouter();
+
 	return (
 		<Card>
-			<CardActionArea>
+			<CardActionArea onClick={() => router.push(`/game/${game.id}`)}>
 				<CardMedia
 					component="img"
 					image={game.background_image}
