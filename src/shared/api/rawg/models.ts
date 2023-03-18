@@ -42,3 +42,28 @@ export type GameDto = {
 	esrb_rating: EsrbRating;
 	platforms: Platform[];
 };
+
+export type Developer = {
+	games_count: number;
+	id: number;
+	image_background: string;
+	name: string;
+	slug: string;
+};
+
+export type GameDetailDto = GameDto & {
+	background_image_additional: string;
+	developers: Developer[];
+	description: string;
+	description_raw: string;
+	website: string;
+	released: string;
+};
+
+export type Screenshot = {
+	image: string;
+	id: number;
+	width: number;
+	height: number;
+	is_deleted: boolean;
+};

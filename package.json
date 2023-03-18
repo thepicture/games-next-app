@@ -1,6 +1,6 @@
 {
   "name": "games-next-app",
-  "version": "0.4.1",
+  "version": "0.5.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -25,6 +25,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-infinite-scroll-hook": "^4.1.1",
+    "react-material-ui-carousel": "^3.4.2",
     "react-query": "^3.39.3",
     "typescript": "4.9.5"
   },
