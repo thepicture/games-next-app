@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 
 import { GameList } from 'widgets/game-list';
 
+import { ThemeSwitch } from 'features/change-theme';
 import { Filter } from 'features/filter-games';
 
 import { Header } from 'shared/ui';
@@ -15,14 +16,19 @@ const Layout = styled('section')(() => ({
 }));
 
 const GamesPage = () => {
-	const [filters, setFilters] = useState({ id: '', name: '', suggestions: '' });
+	const [filters, setFilters] = useState({
+		id: '',
+		name: '',
+		suggestions: '',
+	});
+
 	return (
 		<>
 			<Head>
 				<title>Games List</title>
 				<meta name="description" content="A list of games" />
 			</Head>
-			<Header title="Games" />
+			<Header title="Games" panel={<ThemeSwitch />} />
 			<Layout>
 				<Filter onChange={(filters) => setFilters(filters)} />
 				<GameList filters={filters} />

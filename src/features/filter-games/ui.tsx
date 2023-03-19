@@ -25,12 +25,10 @@ export const Filter = ({ onChange }: FilterProps) => {
 
 	return (
 		<Form onChange={() => onChange({ name, id, suggestions })}>
-			<Typography component="h2" variant="h5" color="white" mb={2}>
+			<Typography component="h2" variant="h5" mb={2}>
 				Filter
 			</Typography>
-			<Typography component="h3" color="white">
-				Primary
-			</Typography>
+			<Typography component="h3">Primary</Typography>
 			<TextField
 				label="By name"
 				onChange={(event) => setName(event.target.value)}
@@ -39,9 +37,7 @@ export const Filter = ({ onChange }: FilterProps) => {
 				label="By ID"
 				onChange={(event) => setId(event.target.value)}
 			/>
-			<Typography component="h3" color="white">
-				Secondary
-			</Typography>
+			<Typography component="h3">Secondary</Typography>
 			<TextField
 				label="By suggestion count"
 				onChange={(event) => setSuggestions(event.target.value)}
