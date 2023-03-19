@@ -7,7 +7,13 @@ import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 
-export const Header = ({ title }: { title: string }) => {
+export const Header = ({
+	title,
+	panel,
+}: {
+	title: string;
+	panel: React.ReactNode;
+}) => {
 	const router = useRouter();
 
 	return (
@@ -32,6 +38,7 @@ export const Header = ({ title }: { title: string }) => {
 					>
 						{title}
 					</Typography>
+					{panel}
 				</Toolbar>
 			</AppBar>
 		</Box>
