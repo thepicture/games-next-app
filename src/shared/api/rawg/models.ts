@@ -5,9 +5,11 @@ export type EsrbRating = {
 };
 
 export type Platform = {
-	id: number;
-	slug: string;
-	name: string;
+	platform: {
+		id: number;
+		slug: string;
+		name: string;
+	};
 };
 
 export type Requirements = {
