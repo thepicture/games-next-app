@@ -3,7 +3,6 @@ const nextConfig = {
 	experimental: {
 		appDir: true,
 	},
-	output: 'standalone',
 	pageExtensions: ['page.tsx', 'page.ts'],
 	images: {
 		domains: ['media.rawg.io'],
