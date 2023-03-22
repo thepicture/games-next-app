@@ -6,12 +6,14 @@ import {
 	Rating,
 	Typography,
 	styled,
+	useMediaQuery,
 } from '@mui/material';
-import CardMedia from '@mui/material/CardMedia';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import { rawgApi } from 'shared/api';
+import { mobile } from 'shared/config';
 
 const TwoColumns = styled('section')(() => ({
 	display: 'flex',
@@ -22,11 +24,19 @@ const TwoColumns = styled('section')(() => ({
 
 export const Game = ({ game }: { game: rawgApi.GameModels.GameDto }) => {
 	const router = useRouter();
+	const matchesQuery = useMediaQuery(mobile);
 
 	const [isImageLoaded, setIsImageLoaded] = useState(false);
 
 	return (
-		<Card sx={{ width: '345px' }}>
+		<Card
+			sx={{
+				width: '345px',
+				[mobile]: {
+					width: '100%',
+				},
+			}}
+		>
 			<CardActionArea onClick={() => router.push(`/game/${game.id}`)}>
 				<section style={{ position: 'relative' }}>
 					{!isImageLoaded && (
@@ -43,15 +53,42 @@ export const Game = ({ game }: { game: rawgApi.GameModels.GameDto }) => {
 							<CircularProgress />
 						</section>
 					)}
-					<CardMedia
-						component="img"
-						image={game.background_image}
-						alt={`${game.name} - ${game.id}`}
-						loading="lazy"
-						height="256px"
-						onLoad={() => setIsImageLoaded(true)}
-						sx={{ opacity: isImageLoaded ? 1 : 0 }}
-					/>
+					{matchesQuery ? (
+						<section
+							style={{
+								width: '100%',
+								height: '256px',
+							}}
+						>
+							<Image
+								src={game.background_image}
+								alt={`${game.name} - ${game.id}`}
+								loading="lazy"
+								fill
+								onLoad={() => setIsImageLoaded(true)}
+								sizes="(max-width: 640px) 25vw,
+									   (max-width: 1200px) 50vw,
+									   33vw"
+								style={{
+									opacity: isImageLoaded ? 1 : 0,
+									objectFit: 'cover',
+								}}
+							/>
+						</section>
+					) : (
+						<Image
+							src={game.background_image}
+							alt={`${game.name} - ${game.id}`}
+							loading="lazy"
+							width={matchesQuery ? 500 : 345}
+							height="256"
+							onLoad={() => setIsImageLoaded(true)}
+							style={{
+								opacity: isImageLoaded ? 1 : 0,
+								objectFit: 'cover',
+							}}
+						/>
+					)}
 				</section>
 				<CardContent>
 					<Typography gutterBottom variant="h5" component="p">

@@ -13,6 +13,7 @@ import { ThemeSwitch } from 'features/change-theme';
 import { gameModel } from 'entities/game';
 import { Screenshot } from 'entities/screenshot';
 
+import { IMAGE_QUALITY } from 'shared/config';
 import { Header, StickyHeader } from 'shared/ui';
 
 const Layout = styled('section')(() => ({
@@ -69,20 +70,27 @@ const GameDetailPage = ({
 							src={game.background_image}
 							alt={`${game.name} cover`}
 							fill
+							sizes="(max-width: 640px) 25vw,
+								   (max-width: 1200px) 50vw,
+								   33vw"
+							quality={IMAGE_QUALITY}
 							style={{ objectFit: 'cover' }}
 						/>
 					</ImageWrapper>
-					<ImageWrapper>
-						<Image
-							src={game.background_image_additional}
-							alt={`${game.name} additional cover`}
-							fill
-							sizes="(max-width: 768px) 100vw,
-						(max-width: 1200px) 50vw,
-						33vw"
-							style={{ objectFit: 'cover' }}
-						/>
-					</ImageWrapper>
+					{game.background_image_additional && (
+						<ImageWrapper>
+							<Image
+								src={game.background_image_additional}
+								alt={`${game.name} additional cover`}
+								fill
+								quality={IMAGE_QUALITY}
+								sizes="(max-width: 768px) 100vw,
+									   (max-width: 1200px) 50vw,
+									   33vw"
+								style={{ objectFit: 'cover' }}
+							/>
+						</ImageWrapper>
+					)}
 				</Carousel>
 				<Typography variant="h3" component="h2" mt={4}>
 					{game.name}

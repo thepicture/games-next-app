@@ -3,6 +3,8 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { rawgApi } from 'shared';
 
+import { IMAGE_QUALITY } from 'shared/config';
+
 export const Screenshot = ({
 	screenshot,
 	gameName,
@@ -35,6 +37,10 @@ export const Screenshot = ({
 				width={256}
 				height={256}
 				loading="lazy"
+				quality={IMAGE_QUALITY}
+				sizes="(max-width: 640px) 25vw,
+					   (max-width: 1200px) 50vw,
+					   33vw"
 				onLoad={() => setIsImageLoaded(true)}
 				style={{
 					opacity: isImageLoaded ? 1 : 0,
