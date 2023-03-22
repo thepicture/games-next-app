@@ -11,8 +11,9 @@ import { rawgApi } from 'shared';
 import { ThemeSwitch } from 'features/change-theme';
 
 import { gameModel } from 'entities/game';
+import { Screenshot } from 'entities/screenshot';
 
-import { Header } from 'shared/ui';
+import { Header, StickyHeader } from 'shared/ui';
 
 const Layout = styled('section')(() => ({
 	display: 'grid',
@@ -38,6 +39,7 @@ const ImageWrapper = styled('section')(() => ({
 const Screenshots = styled('section')(() => ({
 	position: 'relative',
 	display: 'flex',
+	justifyContent: 'center',
 	flexWrap: 'wrap',
 	gap: 16,
 }));
@@ -57,7 +59,9 @@ const GameDetailPage = ({
 				<title>{game.name} - Details</title>
 				<meta name="description" content={`Details of ${game.name}`} />
 			</Head>
-			<Header title={game.name} panel={<ThemeSwitch />} />
+			<StickyHeader>
+				<Header title={game.name} panel={<ThemeSwitch />} />
+			</StickyHeader>
 			<Layout>
 				<Carousel sx={{ margin: '-8px' }}>
 					<ImageWrapper>
@@ -154,18 +158,10 @@ const GameDetailPage = ({
 									).results
 							)
 							.map((screenshot: rawgApi.GameModels.Screenshot) => (
-								<Image
-									key={screenshot.id.toString()}
-									src={screenshot.image}
-									alt={`${game.name} screenshot`}
-									width={256}
-									height={256}
-									loading="lazy"
-									style={{
-										objectFit: 'cover',
-										borderRadius: '8px',
-										padding: 4,
-									}}
+								<Screenshot
+									key={screenshot.id}
+									screenshot={screenshot}
+									gameName={game.name}
 								/>
 							))
 					)}
