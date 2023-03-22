@@ -1,16 +1,17 @@
 import {
+	Card,
 	CardActionArea,
 	CardContent,
+	CircularProgress,
 	Rating,
 	Typography,
 	styled,
 } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { rawgApi } from 'shared/api';
-import { Card } from 'shared/ui';
 
 const TwoColumns = styled('section')(() => ({
 	display: 'flex',
@@ -22,16 +23,36 @@ const TwoColumns = styled('section')(() => ({
 export const Game = ({ game }: { game: rawgApi.GameModels.GameDto }) => {
 	const router = useRouter();
 
+	const [isImageLoaded, setIsImageLoaded] = useState(false);
+
 	return (
-		<Card>
+		<Card sx={{ width: '345px' }}>
 			<CardActionArea onClick={() => router.push(`/game/${game.id}`)}>
-				<CardMedia
-					component="img"
-					image={game.background_image}
-					alt={`${game.name} - ${game.id}`}
-					loading="lazy"
-					sx={{ minHeight: 256 }}
-				/>
+				<section style={{ position: 'relative' }}>
+					{!isImageLoaded && (
+						<section
+							style={{
+								position: 'absolute',
+								width: '100%',
+								height: '100%',
+								display: 'flex',
+								justifyContent: 'center',
+								alignItems: 'center',
+							}}
+						>
+							<CircularProgress />
+						</section>
+					)}
+					<CardMedia
+						component="img"
+						image={game.background_image}
+						alt={`${game.name} - ${game.id}`}
+						loading="lazy"
+						height="256px"
+						onLoad={() => setIsImageLoaded(true)}
+						sx={{ opacity: isImageLoaded ? 1 : 0 }}
+					/>
+				</section>
 				<CardContent>
 					<Typography gutterBottom variant="h5" component="p">
 						{game.name}
