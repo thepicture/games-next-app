@@ -7,12 +7,18 @@ import { GameList } from 'widgets/game-list';
 import { ThemeSwitch } from 'features/change-theme';
 import { Filter } from 'features/filter-games';
 
-import { Header } from 'shared/ui';
+import { Header, StickyHeader } from 'shared/ui';
 
 const Layout = styled('section')(() => ({
 	display: 'grid',
 	gridTemplateColumns: '1fr 3fr',
-	padding: 8,
+	padding: 16,
+}));
+
+const StickyFilter = styled('section')(() => ({
+	position: 'sticky',
+	top: 16 + 64,
+	height: 'fit-content',
 }));
 
 const GamesPage = () => {
@@ -28,9 +34,13 @@ const GamesPage = () => {
 				<title>Games List</title>
 				<meta name="description" content="A list of games" />
 			</Head>
-			<Header title="Games" panel={<ThemeSwitch />} />
+			<StickyHeader>
+				<Header title="Games" panel={<ThemeSwitch />} />
+			</StickyHeader>
 			<Layout>
-				<Filter onChange={(filters) => setFilters(filters)} />
+				<StickyFilter>
+					<Filter onChange={(filters) => setFilters(filters)} />
+				</StickyFilter>
 				<GameList filters={filters} />
 			</Layout>
 		</>

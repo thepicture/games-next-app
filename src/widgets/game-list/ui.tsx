@@ -9,9 +9,10 @@ import { GameDto } from 'shared/api/rawg/models';
 
 const List = styled('section')(() => ({
 	display: 'flex',
+	justifyContent: 'center',
 	flex: 1,
 	flexWrap: 'wrap',
-	gap: 8,
+	gap: 16,
 }));
 
 export type GameListProps = {
