@@ -44,8 +44,8 @@ const GamesPage = () => {
 	return (
 		<>
 			<Head>
-				<title>Games List</title>
-				<meta name="description" content="A list of games" />
+				<title key="title">Games List</title>
+				<meta key="description" name="description" content="A list of games" />
 			</Head>
 			<StickyHeader>
 				<Header title="Games" panel={<ThemeSwitch />} />

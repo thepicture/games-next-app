@@ -4,7 +4,7 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { rawgApi } from 'shared';
 
@@ -45,20 +45,32 @@ const Screenshots = styled('section')(() => ({
 	gap: 16,
 }));
 
-const GameDetailPage = ({
-	game,
-}: {
-	game: rawgApi.GameModels.GameDetailDto;
-}) => {
-	const { isLoading, data: screenshots } = gameModel.useScreenshotsQuery(
-		game.slug
+const GameDetailPage = ({ slug }: { slug: string }) => {
+	const [game, setGame] = useState<rawgApi.GameModels.GameDetailDto | null>(
+		null
 	);
+	const { data: screenshots, isLoading: areScreenshotsLoading } =
+		gameModel.useScreenshotsQuery(slug);
+
+	useEffect(() => {
+		gameModel.getGameBySlug(slug).then((game) => {
+			setGame(game);
+		});
+	}, [slug]);
+
+	if (!game) {
+		return <Typography>Loading...</Typography>;
+	}
 
 	return (
 		<>
-			<Head>
-				<title>{game.name} - Details</title>
-				<meta name="description" content={`Details of ${game.name}`} />
+			<Head key="head">
+				<title key="details">{game.name} - Details</title>
+				<meta
+					key="description"
+					name="description"
+					content={`Details of ${game.name}`}
+				/>
 			</Head>
 			<StickyHeader>
 				<Header title={game.name} panel={<ThemeSwitch />} />
@@ -70,11 +82,12 @@ const GameDetailPage = ({
 							src={game.background_image}
 							alt={`${game.name} cover`}
 							fill
-							sizes="(max-width: 640px) 25vw,
+							sizes="(max-width: 768px) 25vw,
 								   (max-width: 1200px) 50vw,
-								   33vw"
+								   100vw"
 							quality={IMAGE_QUALITY}
 							style={{ objectFit: 'cover' }}
+							priority
 						/>
 					</ImageWrapper>
 					{game.background_image_additional && (
@@ -84,10 +97,11 @@ const GameDetailPage = ({
 								alt={`${game.name} additional cover`}
 								fill
 								quality={IMAGE_QUALITY}
-								sizes="(max-width: 768px) 100vw,
+								sizes="(max-width: 768px) 25vw,
 									   (max-width: 1200px) 50vw,
-									   33vw"
+									   100vw"
 								style={{ objectFit: 'cover' }}
+								priority
 							/>
 						</ImageWrapper>
 					)}
@@ -100,10 +114,9 @@ const GameDetailPage = ({
 						Made by
 					</Typography>
 					{game.developers.map((developer) => (
-						<>
+						<section key={developer.id}>
 							<Image
 								title={developer.name}
-								key={developer.id.toString()}
 								src={developer.image_background}
 								alt={`logo of ${developer.name}`}
 								width={32}
@@ -111,7 +124,7 @@ const GameDetailPage = ({
 								style={{ borderRadius: '8px', padding: 4 }}
 							/>
 							{developer.name}
-						</>
+						</section>
 					))}
 				</DeveloperList>
 				<Typography
@@ -153,7 +166,7 @@ const GameDetailPage = ({
 					Screenshots
 				</Typography>
 				<Screenshots>
-					{isLoading || !screenshots ? (
+					{areScreenshotsLoading || !screenshots ? (
 						<p>Loading screenshots...</p>
 					) : (
 						screenshots.pages
@@ -180,13 +193,9 @@ const GameDetailPage = ({
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	const game = await gameModel.getGameBySlug(
-		(context.params as { slug: string }).slug
-	);
-
 	return {
 		props: {
-			game,
+			slug: context.query.slug,
 		},
 	};
 };
