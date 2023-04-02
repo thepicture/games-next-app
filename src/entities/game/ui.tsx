@@ -1,4 +1,5 @@
 import {
+	Box,
 	Card,
 	CardActionArea,
 	CardContent,
@@ -94,16 +95,17 @@ export const Game = ({ game }: { game: rawgApi.GameModels.GameDto }) => {
 					<Typography gutterBottom variant="h5" component="p">
 						{game.name}
 					</Typography>
-					<Rating
-						defaultValue={0}
-						value={game.rating}
-						readOnly
-						precision={0.5}
-						sx={{ mb: 2 }}
-					/>{' '}
-					<Typography display="inline" variant="caption">
-						{game.rating}/5
-					</Typography>
+					<Box display="flex" alignItems="center" mb={2}>
+						<Rating
+							defaultValue={0}
+							value={game.rating}
+							readOnly
+							precision={0.5}
+						/>
+						<Typography display="inline" variant="caption" pt={1 / 4}>
+							{game.rating}/5
+						</Typography>
+					</Box>
 					<TwoColumns>
 						<Typography variant="body2" color="text.secondary">
 							{game.ratings_count} votes

@@ -45,6 +45,21 @@ const Screenshots = styled('section')(() => ({
 	gap: 16,
 }));
 
+const ResponsiveLayout = styled.section`
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	padding: 32px;
+
+	@media screen and (max-width: 1080px) {
+		grid-template-columns: 1fr;
+	}
+`;
+
+const Developer = styled('address')(() => ({
+	display: 'flex',
+	alignItems: 'center',
+}));
+
 const GameDetailPage = ({ slug }: { slug: string }) => {
 	const [game, setGame] = useState<rawgApi.GameModels.GameDetailDto | null>(
 		null
@@ -106,87 +121,101 @@ const GameDetailPage = ({ slug }: { slug: string }) => {
 						</ImageWrapper>
 					)}
 				</Carousel>
-				<Typography variant="h3" component="h2" mt={4}>
-					{game.name}
-				</Typography>
-				<DeveloperList>
-					<Typography sx={{ fontSize: 14, display: 'inline' }}>
-						Made by
-					</Typography>
-					{game.developers.map((developer) => (
-						<section key={developer.id}>
-							<Image
-								title={developer.name}
-								src={developer.image_background}
-								alt={`logo of ${developer.name}`}
-								width={32}
-								height={32}
-								style={{ borderRadius: '8px', padding: 4 }}
-							/>
-							{developer.name}
-						</section>
-					))}
-				</DeveloperList>
-				<Typography
-					variant="h4"
-					component="h3"
-					sx={{ float: 'left' }}
-					gutterBottom
-				>
-					Rating
-				</Typography>
-				<Rating defaultValue={0} value={game.rating} readOnly sx={{ mb: 2 }} />
-				<Typography variant="h4" component="h3" gutterBottom>
-					Release Date
-				</Typography>
-				<Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
-					{new Date(game.released).toLocaleDateString()}
-				</Typography>
-				<Typography variant="h4" component="h3" gutterBottom>
-					Description
-				</Typography>
-				<Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
-					{game.description_raw}
-				</Typography>
-				<Typography variant="h4" component="h3" gutterBottom>
-					Download Link
-				</Typography>
-				<Link
-					href={game.website}
-					style={{
-						fontSize: 16,
-						color: 'inherit',
-						paddingBottom: 16,
-					}}
-					color="text.secondary"
-				>
-					{game.website}
-				</Link>
-				<Typography variant="h4" component="h3" gutterBottom>
-					Screenshots
-				</Typography>
-				<Screenshots>
-					{areScreenshotsLoading || !screenshots ? (
-						<p>Loading screenshots...</p>
-					) : (
-						screenshots.pages
-							.flatMap(
-								(page) =>
-									(
-										page as unknown as {
-											results: rawgApi.GameModels.Screenshot;
-										}
-									).results
-							)
-							.map((screenshot: rawgApi.GameModels.Screenshot) => (
-								<Screenshot
-									key={screenshot.id}
-									screenshot={screenshot}
-									gameName={game.name}
-								/>
-							))
-					)}
-				</Screenshots>
+				<ResponsiveLayout>
+					<section>
+						<Typography variant="h3" component="h2">
+							{game.name}
+						</Typography>
+						<DeveloperList>
+							<Typography sx={{ fontSize: 14, display: 'inline' }}>
+								Made by
+							</Typography>
+							{game.developers.map((developer) => (
+								<Developer key={developer.id}>
+									<Image
+										title={developer.name}
+										src={developer.image_background}
+										alt={`logo of ${developer.name}`}
+										width={32}
+										height={32}
+										style={{ borderRadius: '8px', padding: 4 }}
+									/>
+									{developer.name}
+								</Developer>
+							))}
+						</DeveloperList>
+						<Typography variant="h4" component="h3" gutterBottom>
+							Rating
+						</Typography>
+						<Rating
+							defaultValue={0}
+							value={game.rating}
+							readOnly
+							sx={{ mb: 2 }}
+						/>
+						<Typography variant="h4" component="h3" gutterBottom>
+							Release Date
+						</Typography>
+						<Typography
+							sx={{ fontSize: 16 }}
+							color="text.secondary"
+							gutterBottom
+						>
+							{new Date(game.released).toLocaleDateString()}
+						</Typography>
+						<Typography variant="h4" component="h3" gutterBottom>
+							Description
+						</Typography>
+						<Typography
+							sx={{ fontSize: 16 }}
+							color="text.secondary"
+							gutterBottom
+						>
+							{game.description_raw}
+						</Typography>
+						<Typography variant="h4" component="h3" gutterBottom>
+							Download Link
+						</Typography>
+						<Link
+							href={game.website}
+							style={{
+								fontSize: 16,
+								color: 'inherit',
+								paddingBottom: 16,
+							}}
+							color="text.secondary"
+						>
+							{game.website}
+						</Link>
+					</section>
+					<section>
+						<Typography variant="h4" component="h3" gutterBottom>
+							Screenshots
+						</Typography>
+						<Screenshots>
+							{areScreenshotsLoading || !screenshots ? (
+								<p>Loading screenshots...</p>
+							) : (
+								screenshots.pages
+									.flatMap(
+										(page) =>
+											(
+												page as unknown as {
+													results: rawgApi.GameModels.Screenshot;
+												}
+											).results
+									)
+									.map((screenshot: rawgApi.GameModels.Screenshot) => (
+										<Screenshot
+											key={screenshot.id}
+											screenshot={screenshot}
+											gameName={game.name}
+										/>
+									))
+							)}
+						</Screenshots>
+					</section>
+				</ResponsiveLayout>
 			</Layout>
 		</>
 	);
