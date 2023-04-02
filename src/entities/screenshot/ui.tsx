@@ -31,7 +31,7 @@ export const Screenshot = ({
 				</section>
 			)}
 			<Image
-				key={screenshot.id.toString()}
+				key={screenshot.id}
 				src={screenshot.image}
 				alt={`${gameName} screenshot`}
 				width={256}

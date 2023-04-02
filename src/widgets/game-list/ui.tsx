@@ -61,7 +61,7 @@ export const GameList = ({ filters }: GameListProps) => {
 						: true
 				)
 				.map((game) => (
-					<GameCard key={game.id.toString()} game={game} />
+					<GameCard key={game.id} game={game} />
 				))}
 			<div ref={scrollRef} />
 		</List>
