@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { Rating, Typography } from '@mui/material';
-import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -15,6 +14,7 @@ import { Screenshot } from 'entities/screenshot';
 
 import { IMAGE_QUALITY } from 'shared/config';
 import { Header, StickyHeader } from 'shared/ui';
+import { useRouter } from 'next/router';
 
 const Layout = styled('section')(() => ({
 	display: 'grid',
@@ -60,7 +60,10 @@ const Developer = styled('address')(() => ({
 	alignItems: 'center',
 }));
 
-const GameDetailPage = ({ slug }: { slug: string }) => {
+const GameDetailPage = () => {
+	const router = useRouter();
+	const slug = router.query.slug as string;
+
 	const [game, setGame] = useState<rawgApi.GameModels.GameDetailDto | null>(
 		null
 	);
@@ -219,14 +222,6 @@ const GameDetailPage = ({ slug }: { slug: string }) => {
 			</Layout>
 		</>
 	);
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-	return {
-		props: {
-			slug: context.query.slug,
-		},
-	};
 };
 
 export default GameDetailPage;

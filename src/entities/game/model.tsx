@@ -21,9 +21,11 @@ export const useScreenshotsQuery = (slug?: string) => {
 	return useInfiniteQuery<rawgApi.GameModels.Screenshot[]>({
 		queryKey: ['screenshots', slug],
 		queryFn: ({ pageParam = 1 }) =>
-			fetch(`${rawgApi.SCREENSHOTS_URL(slug || '')}&page=${pageParam}`).then(
-				(res) => res.json()
-			),
+			slug
+				? fetch(
+						`${rawgApi.SCREENSHOTS_URL(slug || '')}&page=${pageParam}`
+				  ).then((res) => res.json())
+				: Promise.resolve([]),
 		getNextPageParam: (lastPage) =>
 			(lastPage as unknown as { next: string }).next &&
 			(lastPage as unknown as { next: string }).next.split('&page=')[1],
